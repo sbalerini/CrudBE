@@ -35,38 +35,17 @@ CLASS Invoice:
      Notes:
     ------------------------------------------------------------------------------*/
     METHOD PUBLIC VOID GetInvoice(INPUT itop AS CHARACTER, OUTPUT DATASET dsGeneral):
-        
-        
-        EMPTY TEMP-TABLE ttinvoice NO-ERROR.
-     //   ASSIGN itop = IF itop <= 0 THEN 2 ELSE itop.  
-         
-        
-                  
+        EMPTY TEMP-TABLE ttinvoice NO-ERROR.   
        
         FIND Invoice WHERE Invoice.Invoicenum = INTEGER(itop) NO-ERROR.
         IF AVAILABLE Invoice THEN DO: 
              CREATE ttinvoice.
-            ASSIGN ttinvoice.Invoicenum  = Invoice.Invoicenum
-                   ttinvoice.CustNum     = Invoice.CustNum
-                   ttinvoice.InvoiceDate = Invoice.InvoiceDate
-                   ttinvoice.Amount      = Invoice.Amount
-                   ttinvoice.TotalPaid   = Invoice.TotalPaid
-                   ttinvoice.Adjustment  = Invoice.Adjustment
-                   ttinvoice.OrderNum    = Invoice.OrderNum
-                   ttinvoice.ShipCharge  = Invoice.ShipCharge.
+             BUFFER-COPY Invoice TO ttinvoice.
         END.
         ELSE DO:
             FOR EACH Invoice NO-LOCK:  
                 CREATE ttinvoice.
-                ASSIGN ttinvoice.Invoicenum  = Invoice.Invoicenum
-                       ttinvoice.CustNum     = Invoice.CustNum
-                       ttinvoice.InvoiceDate = Invoice.InvoiceDate
-                       ttinvoice.Amount      = Invoice.Amount
-                       ttinvoice.TotalPaid   = Invoice.TotalPaid
-                       ttinvoice.Adjustment  = Invoice.Adjustment
-                       ttinvoice.OrderNum    = Invoice.OrderNum
-                       ttinvoice.ShipCharge  = Invoice.ShipCharge.
-         
+                BUFFER-COPY Invoice TO ttinvoice.
              END.
          END.
     END METHOD.
