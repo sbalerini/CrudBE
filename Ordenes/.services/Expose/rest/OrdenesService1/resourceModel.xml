@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prgs:model xmlns:prgs="http://www.progress.com/caf/camel/component/prgrs" id="resourceModel">
+  <prgs:resource consumes="application/json" name="_GetInvoice" path="/Invoice" produces="application/json">
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/InvoicePut.pidl::com.progress.openedge.pdt.bpmbindings" name="InvoicePut" produces="application/json" verb="PUT"/>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/InvoicePost.pidl::com.progress.openedge.pdt.bpmbindings" name="InvoicePost" produces="application/json" verb="POST"/>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/InvoiceDel.pidl::com.progress.openedge.pdt.bpmbindings" name="InvoiceDel" produces="application/json" verb="DELETE">
+      <prgs:param name="wId" type="QUERY"/>
+      <prgs:param name="wId2" type="QUERY"/>
+    </prgs:operation>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/InvoiceSI.pidl::com.progress.openedge.pdt.bpmbindings" name="InvoiceSI" produces="application/json" verb="GET">
+      <prgs:param name="itop" type="QUERY"/>
+    </prgs:operation>
+  </prgs:resource>
+  <prgs:resource consumes="application/json" name="_GetCustomer" path="/GetCustomer" produces="application/json">
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/Customer.pidl::com.progress.openedge.pdt.bpmbindings" name="Customer..ReadCustomer" produces="application/json" verb="GET">
+      <prgs:param name="filter" type="QUERY"/>
+    </prgs:operation>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/Customer.pidl::com.progress.openedge.pdt.bpmbindings" name="Customer..UpdateCustomer" produces="application/json" verb="PUT"/>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/Customer.pidl::com.progress.openedge.pdt.bpmbindings" name="Customer..DeleteCustomer" produces="application/json" verb="DELETE"/>
+    <prgs:operation consumes="application/json" idls="Ordenes/.services/AppServer/Customer.pidl::com.progress.openedge.pdt.bpmbindings" name="Customer..CreateCustomer" produces="application/json" verb="POST"/>
+  </prgs:resource>
+</prgs:model>

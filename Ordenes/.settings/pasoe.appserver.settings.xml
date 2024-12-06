@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module-content version="12.8">
+    <module id="4405764a-8b4d-4fb9-96e5-6b21282877ac" name="Ordenes">
+        <resource path="AppServer" publish="true"/>
+    </module>
+</module-content>

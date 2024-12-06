@@ -1,0 +1,217 @@
+{
+    "services": {
+        "OrdenesService": {
+            "version": "1.0.0",
+            "operations": {
+                "\/": {
+                    "GET": {
+                        "contentType": "application\/json",
+                        "statusCode": 200,
+                        "file": "$CATALINA_BASE\/webapps\/$oepas-webapp\/static\/OrdenesService.json"
+                    }
+                },
+                "\/Empleados": {
+                    "PUT": {
+                        "contentType": "application\/json",
+                        "options": {
+                            "writeBI": true
+                        },
+                        "entity": {
+                            "name": "Empleados",
+                            "function": "UpdateEmpleados",
+                            "arg": [{
+                                "ablName": "dsEmployee",
+                                "ablType": "DATASET",
+                                "ioMode": "INPUT-OUTPUT",
+                                "msgElem": {
+                                    "type": "BODY",
+                                    "name": null
+                                }
+                            }]
+                        }
+                    },
+                    "GET": {
+                        "contentType": "application\/json",
+                        "options": {
+                            "writeBI": true
+                        },
+                        "entity": {
+                            "name": "Empleados",
+                            "function": "ReadEmpleados",
+                            "arg": [
+                                {
+                                    "ablName": "filter",
+                                    "ablType": "CHARACTER",
+                                    "ioMode": "INPUT",
+                                    "msgElem": {
+                                        "type": "QUERY",
+                                        "name": "filter"
+                                    }
+                                },
+                                {
+                                    "ablName": "dsEmployee",
+                                    "ablType": "DATASET",
+                                    "ioMode": "OUTPUT",
+                                    "msgElem": {
+                                        "type": "BODY",
+                                        "name": null
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "DELETE": {
+                        "contentType": "application\/json",
+                        "options": {
+                            "writeBI": true
+                        },
+                        "entity": {
+                            "name": "Empleados",
+                            "function": "DeleteEmpleados",
+                            "arg": [{
+                                "ablName": "dsEmployee",
+                                "ablType": "DATASET",
+                                "ioMode": "INPUT-OUTPUT",
+                                "msgElem": {
+                                    "type": "BODY",
+                                    "name": null
+                                }
+                            }]
+                        }
+                    },
+                    "POST": {
+                        "contentType": "application\/json",
+                        "options": {
+                            "writeBI": true
+                        },
+                        "entity": {
+                            "name": "Empleados",
+                            "function": "CreateEmpleados",
+                            "arg": [{
+                                "ablName": "dsEmployee",
+                                "ablType": "DATASET",
+                                "ioMode": "INPUT-OUTPUT",
+                                "msgElem": {
+                                    "type": "BODY",
+                                    "name": null
+                                }
+                            }]
+                        }
+                    }
+                }
+            },
+            "schemas": {
+                "dsEmployee": {
+                    "ttEmployee": {
+                        "trackChanges": true,
+                        "indexes": {
+                            "DeptCode": {
+                                "primary": false,
+                                "unique": false,
+                                "word": false,
+                                "fields": ["DeptCode:asc"]
+                            },
+                            "EmpNo": {
+                                "primary": true,
+                                "unique": true,
+                                "word": false,
+                                "fields": ["EmpNum:asc"]
+                            },
+                            "Name": {
+                                "primary": false,
+                                "unique": true,
+                                "word": false,
+                                "fields": [
+                                    "LastName:asc",
+                                    "FirstName:asc"
+                                ]
+                            }
+                        },
+                        "fields": [
+                            {
+                                "name": "EmpNum",
+                                "ablType": "INTEGER",
+                                "extent": null
+                            },
+                            {
+                                "name": "LastName",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "FirstName",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "Address",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "Address2",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "City",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "State",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "PostalCode",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "HomePhone",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "WorkPhone",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "DeptCode",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "Position",
+                                "ablType": "CHARACTER",
+                                "extent": null
+                            },
+                            {
+                                "name": "Birthdate",
+                                "ablType": "DATE",
+                                "extent": null
+                            },
+                            {
+                                "name": "StartDate",
+                                "ablType": "DATE",
+                                "extent": null
+                            },
+                            {
+                                "name": "VacationDaysLeft",
+                                "ablType": "INTEGER",
+                                "extent": null
+                            },
+                            {
+                                "name": "SickDaysLeft",
+                                "ablType": "INTEGER",
+                                "extent": null
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
