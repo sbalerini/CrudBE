@@ -33,6 +33,7 @@ CATCH e AS Progress.Lang.Error:
 END CATCH.
 FINALLY:
     EMPTY TEMP-TABLE ttinvoice.
-    DELETE OBJECT oInvoice.
+    
     RELEASE Invoice.
+    DELETE OBJECT oInvoice.
 END FINALLY.

@@ -24,14 +24,17 @@ BLOCK-LEVEL ON ERROR UNDO, THROW.
 /* ***************************  Main Block  *************************** */
 DEFINE INPUT PARAMETER wId AS CHARACTER.
 DEFINE INPUT PARAMETER wId2 AS CHARACTER.
+DEFINE INPUT PARAMETER wId3 AS CHARACTER.
 DEFINE OUTPUT PARAMETER DATASET FOR dsGeneral.
 DEFINE VARIABLE oInvoice AS Invoice NO-UNDO.
 
     oInvoice = NEW Invoice().
-    oInvoice:DeleteInvoice(INPUT wId , INPUT wId2 , OUTPUT DATASET dsGeneral).
+    oInvoice:DeleteInvoice(INPUT wId , INPUT wId2 , INPUT wId3 , OUTPUT DATASET dsGeneral).
     
 CATCH e AS Progress.Lang.Error:
 END CATCH.
 FINALLY:
-    DELETE OBJECT oInvoice.
+     RELEASE Invoice.
+     EMPTY TEMP-TABLE ttinvoice.
+     DELETE OBJECT oInvoice.
 END FINALLY.

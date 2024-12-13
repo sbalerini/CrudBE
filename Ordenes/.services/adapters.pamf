@@ -94,12 +94,13 @@
   &lt;mapping:mapFault name=&quot;default_fault&quot;/>&#xD;
 &lt;/mapping:messageMapping></lm:properties>
             <lm:properties name="_GetInvoice::InvoiceDel::DELETE">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;
-&lt;mapping:messageMapping xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:mapping=&quot;http://www.progress.com/caf/mapping1.0&quot; xmlns:metadata=&quot;http://www.progress.com/caf/mapping1.0/toolingMetadata&quot;>&#xD;
-  &lt;metadata:toolingMetadata xsi:type=&quot;metadata:toolingMetadata&quot;>&#xD;
+&lt;mapping:messageMapping xmlns:mapping=&quot;http://www.progress.com/caf/mapping1.0&quot; xmlns:metadata=&quot;http://www.progress.com/caf/mapping1.0/toolingMetadata&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>&#xD;
+  &lt;metadata:toolingMetadata>&#xD;
     &lt;metadata:mapInput>&#xD;
       &lt;metadata:source>&#xD;
         &lt;metadata:mappablesData displayName=&quot;wId&quot; expressionName=&quot;${rest.queryparam['wId']}&quot; mappableType=&quot;MANUAL&quot;/>&#xD;
         &lt;metadata:mappablesData displayName=&quot;wId2&quot; expressionName=&quot;${rest.queryparam['wId2']}&quot; mappableType=&quot;MANUAL&quot;/>&#xD;
+        &lt;metadata:mappablesData displayName=&quot;wId3&quot; expressionName=&quot;${rest.queryparam['wId3']}&quot; mappableType=&quot;MANUAL&quot;/>&#xD;
       &lt;/metadata:source>&#xD;
       &lt;metadata:target/>&#xD;
     &lt;/metadata:mapInput>&#xD;
@@ -111,6 +112,7 @@
   &lt;mapping:mapInput>&#xD;
     &lt;mapping:rule action=&quot;None&quot; resource=&quot;&quot; source=&quot;${rest.queryparam['wId']}&quot; target=&quot;${idl.param['wId']}&quot; type=&quot;INTERFACE_PARAM&quot;/>&#xD;
     &lt;mapping:rule action=&quot;None&quot; resource=&quot;&quot; source=&quot;${rest.queryparam['wId2']}&quot; target=&quot;${idl.param['wId2']}&quot; type=&quot;INTERFACE_PARAM&quot;/>&#xD;
+    &lt;mapping:rule action=&quot;None&quot; resource=&quot;&quot; source=&quot;${rest.queryparam['wId3']}&quot; target=&quot;${idl.param['wId3']}&quot; type=&quot;INTERFACE_PARAM&quot;/>&#xD;
   &lt;/mapping:mapInput>&#xD;
   &lt;mapping:mapOutput>&#xD;
     &lt;mapping:rule action=&quot;None&quot; resource=&quot;&quot; source=&quot;${idl.param['dsGeneral']}&quot; target=&quot;${http.body}&quot; type=&quot;INTERFACE_PARAM&quot;/>&#xD;
