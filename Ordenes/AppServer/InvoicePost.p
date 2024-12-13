@@ -33,6 +33,6 @@ DEFINE VARIABLE oInvoice AS Invoice NO-UNDO.
 CATCH e AS Progress.Lang.Error: 
 END CATCH.
 FINALLY:
-  //  EMPTY TEMP-TABLE ttinvoice.
+    EMPTY TEMP-TABLE ttinvoice.
     DELETE OBJECT oInvoice.
 END FINALLY.

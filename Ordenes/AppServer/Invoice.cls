@@ -35,40 +35,22 @@ CLASS Invoice:
      Notes:
     ------------------------------------------------------------------------------*/
     METHOD PUBLIC VOID GetInvoice(INPUT itop AS CHARACTER, OUTPUT DATASET dsGeneral):
-        
-        
-        EMPTY TEMP-TABLE ttinvoice NO-ERROR.
-     //   ASSIGN itop = IF itop <= 0 THEN 2 ELSE itop.  
-         
-        
-                  
+        EMPTY TEMP-TABLE ttinvoice NO-ERROR.   
        
+       output to C:\temporal\zzztop.txt.
+              display "1" itop.
+              output close.
         FIND Invoice WHERE Invoice.Invoicenum = INTEGER(itop) NO-ERROR.
         IF AVAILABLE Invoice THEN DO: 
              CREATE ttinvoice.
-            ASSIGN ttinvoice.Invoicenum  = Invoice.Invoicenum
-                   ttinvoice.CustNum     = Invoice.CustNum
-                   ttinvoice.InvoiceDate = Invoice.InvoiceDate
-                   ttinvoice.Amount      = Invoice.Amount
-                   ttinvoice.TotalPaid   = Invoice.TotalPaid
-                   ttinvoice.Adjustment  = Invoice.Adjustment
-                   ttinvoice.OrderNum    = Invoice.OrderNum
-                   ttinvoice.ShipCharge  = Invoice.ShipCharge.
+             BUFFER-COPY Invoice TO ttinvoice.
         END.
         ELSE DO:
-            FOR EACH Invoice NO-LOCK:  
+             FOR EACH Invoice NO-LOCK:  
                 CREATE ttinvoice.
-                ASSIGN ttinvoice.Invoicenum  = Invoice.Invoicenum
-                       ttinvoice.CustNum     = Invoice.CustNum
-                       ttinvoice.InvoiceDate = Invoice.InvoiceDate
-                       ttinvoice.Amount      = Invoice.Amount
-                       ttinvoice.TotalPaid   = Invoice.TotalPaid
-                       ttinvoice.Adjustment  = Invoice.Adjustment
-                       ttinvoice.OrderNum    = Invoice.OrderNum
-                       ttinvoice.ShipCharge  = Invoice.ShipCharge.
-         
+                BUFFER-COPY Invoice TO ttinvoice.
              END.
-         END.
+        END.
     END METHOD.
     
     METHOD PUBLIC VOID PostInvoice(INPUT-OUTPUT DATASET dsGeneral):
@@ -98,7 +80,13 @@ CLASS Invoice:
                    ttEstados.Descripcion = "Fecha futura. Verifique y Reingrese".
             RETURN.
         END.
-        FIND Invoice WHERE Invoice.Invoicenum =  ttinvoice.Invoicenum NO-ERROR.
+        IF ttinvoice.Amount > (ttinvoice.TotalPaid + ttinvoice.Adjustment)  THEN DO:
+            CREATE ttEstados.
+            ASSIGN ttEstados.Estado      = "Error"
+                   ttEstados.Descripcion = "El monto no puede ser mayor a total pago con ajuste".
+            RETURN.
+        END.
+        FIND Invoice WHERE Invoice.Invoicenum    =  ttinvoice.Invoicenum NO-ERROR.
         IF NOT AVAILABLE Invoice THEN DO:
             FOR EACH ttinvoice :
             FIND LAST Invoice USE-INDEX CustNum .
@@ -131,55 +119,21 @@ CLASS Invoice:
 
     METHOD PUBLIC VOID UpdateInvoice(INPUT-OUTPUT DATASET dsGeneral):
       
-        
-    /*    DEF VAR oUri    As URI NO-UNDO.
-        DEF VAR oReq   As IHttpRequest NO-UNDO.
-        DEF VAR oResp   As IHttpResponse NO-UNDO.
-        
-         DEF VAR oJsonRespObj   As JsonObject NO-UNDO.
-        output to C:\temporal\zzztop.txt.
-              display "1" .
-              output close.
-        ASSIGN oUri = new URI("http", "192.168.10.54:8810").
-               oUri:Path = "/Ordenes/rest/DEMOOE1Service/Invoice".
-        output to C:\temporal\zzztop.txt.
-              display "2" .
-              output close.
-        oReq = RequestBuilder:Get(oUri):AcceptJson():Request.
-        output to C:\temporal\zzztop.txt.
-              display "3" STRING(oReq) .
-              output close.
-        oResp = ClientBuilder:Build():Client:Execute(oReq).
-        output to C:\temporal\zzztop.txt.
-              display "4" STRING(oResp).
-              output close.
-        output to C:\temporal\zzztop.txt.
-              display "Dentro UpdateInvoice" oResp:StatusCode oJsonRespObj:GetInteger("Invoicenum").
-              output close.
-        IF  oResp:StatusCode <> 200 THEN DO:
-            CREATE ttEstados.
-            ASSIGN ttEstados.Estado      = "Error"
-                   ttEstados.Descripcion = "El registro NO Existe, No puede ser modificado".
-        END.
-        ELSE DO:
-            
-            output to C:\temporal\zzztop.txt.
-              display "Dentro UpdateInvoice" oJsonRespObj:GetInteger("Invoicenum") oJsonRespObj:GetInteger("CustNum").
-              output close.
-        END. 
-        find first UpdateInvoice NO-error.
-        output to C:\temporal\zzztop.txt.
-              display "Dentro UpdateInvoice" string(UpdateInvoice.Invoicenum, ">>>>>9") string(UpdateInvoice.CustNum, ">>>>>9").
-              output close.*/
         FIND FIRST ttinvoice NO-ERROR.
         IF ttinvoice.Invoicenum < 0 OR ttinvoice.CustNum < 0 THEN DO:
             CREATE ttEstados.
             ASSIGN ttEstados.Estado      = "Error"
                    ttEstados.Descripcion = "El indice no puede ser negativo. Verifique y Reingrese".
+            RETURN.
         END.
-        
+        IF ttinvoice.Amount > (ttinvoice.TotalPaid + ttinvoice.Adjustment)  THEN DO:
+            CREATE ttEstados.
+            ASSIGN ttEstados.Estado      = "Error"
+                   ttEstados.Descripcion = "El monto no puede ser mayor a total pago con ajuste".
+            RETURN.
+        END.
          output to C:\temporal\zzztop.txt.
-              display "Dentro UpdateInvoice" STRING(ttinvoice.InvoiceDate) .
+              display "Dentro UpdateInvoice" STRING(ttinvoice.InvoiceDate) string(ttinvoice.InvoiceDate) .
               output close.
         FIND Invoice WHERE Invoice.Invoicenum   = ttinvoice.Invoicenum
                        AND Invoice.CustNum      = ttinvoice.CustNum EXCLUSIVE-LOCK NO-ERROR.
@@ -203,19 +157,27 @@ CLASS Invoice:
     
     
     
-    METHOD PUBLIC VOID DeleteInvoice(INPUT wId AS CHARACTER, INPUT wId2 AS CHARACTER, OUTPUT DATASET dsGeneral):
-        
+    METHOD PUBLIC VOID DeleteInvoice(INPUT wId AS CHARACTER, INPUT wId2 AS CHARACTER, INPUT wId3 AS CHARACTER, OUTPUT DATASET dsGeneral):
         
          output to C:\temporal\zzztop.txt.
-              display "1" wId wId2 .
+              display "1" wId wId2 wId3 .
               output close.
         CREATE ttEstados.
         FIND Invoice WHERE Invoice.Invoicenum       =  INTEGER(wId) 
-                             AND Invoice.Custnum    =  INTEGER(wId2)  NO-ERROR.
+                       AND Invoice.Custnum          =  INTEGER(wId2)
+                       AND Invoice.Ordernum         =  INTEGER(wId3)  NO-ERROR.
         IF AVAILABLE Invoice THEN DO:
-            DELETE Invoice.
-            ASSIGN ttEstados.Estado      = "OK"
-                   ttEstados.Descripcion = "El registro ha sido eliminado".
+            IF Invoice.Amount > (Invoice.TotalPaid + Invoice.Adjustment)  THEN DO:
+                CREATE ttEstados.
+                ASSIGN ttEstados.Estado      = "Error"
+                       ttEstados.Descripcion = "El monto no puede ser mayor a total pago con ajuste".
+                RETURN.
+            END.
+            ElSE DO:
+                DELETE Invoice.
+                ASSIGN ttEstados.Estado      = "OK"
+                       ttEstados.Descripcion = "El registro ha sido eliminado".
+            END.
         END.
         ELSE DO:
             ASSIGN ttEstados.Estado      = "Error"
