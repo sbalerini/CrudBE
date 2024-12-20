@@ -1,1 +1,1 @@
-PROYECTO Back End con Progress Developer Studio
+PROYECTO Back End CRUD de la tabla entidades API pura con Progress Developer Studio
